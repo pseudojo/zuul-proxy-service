@@ -1,0 +1,48 @@
+server:
+  port: ${port:9989}
+
+info:
+  component: 'Zuul Proxy (only Ribbon)'
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    enabled: true
+    
+# route 규칙은 zuul.routes.[spring.application.name]=path
+zuul:
+  ignored-services: '*'
+  ignored-patterns: { /**/api/** }
+  routes:
+    simple-service-with-discovery: 
+      serviceId: simple-service-with-discovery
+      path: /hello/**
+    simple-discovery-server:
+      serviceId: simple-discovery-server 
+      path: /eureka/**
+      #strip-prefix: false
+
+eureka:
+  client:
+    enabled: false
+
+simple-service-with-discovery:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:8988,localhost:8989
+    ServerListRefreshInterval: 5000    
+
+simple-discovery-server:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:8761
+    ServerListRefreshInterval: 5000
+
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
