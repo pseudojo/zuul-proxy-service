@@ -1,0 +1,42 @@
+server:
+  port: ${port:9999}
+
+info:
+  component: 'Zuul Proxy'
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    enabled: true
+    
+# route 규칙은 zuul.routes.[spring.application.name]=path
+zuul:
+  ignored-services: '*'
+  ignored-patterns: { /**/api/** }
+  routes:
+    simple-service-with-discovery: 
+      path: /hello/**
+    simple-discovery-server: 
+      path: /eureka/**
+      #strip-prefix: false
+  
+eureka:
+  instance:
+    appname: zuul-proxy-testapp
+    hostname: ${vcap.application.uris[0]:localhost}
+    #non-secure-port: 80
+    #non-secure-port-enabled: false
+    metadata-map:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}-${eureka.instance.metadata-map.uuid}}
+      uuid: ${random.uuid}
+    lease-expiration-duration-in-seconds: 5 
+    lease-renewal-interval-in-seconds: 10
+  client:
+    registry-fetch-interval-seconds: 5
+    
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
