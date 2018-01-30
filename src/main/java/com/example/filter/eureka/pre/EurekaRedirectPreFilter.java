@@ -1,22 +1,23 @@
-package com.example.filter.eureka;
+package com.example.filter.eureka.pre;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import com.example.filter.FilterOrder;
+import com.example.filter.FilterType;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
-// Eureka Pre-route Filter
-
-public class EurekaResourcePreFilter extends ZuulFilter {
+// Eureka Pre-route Filter (Redirect)
+public class EurekaRedirectPreFilter extends ZuulFilter {
 	private Logger logger = LoggerFactory.getLogger( getClass() );
+	
+	private String type = FilterType.PRE;
 	
 	@Override
 	public boolean shouldFilter() {
@@ -25,12 +26,20 @@ public class EurekaResourcePreFilter extends ZuulFilter {
 	
 	@Override
 	public int filterOrder() {
-		return 1;
+		return FilterOrder.PreRouteOrder.EurekaRedirectPreFilter;
 	}
 
 	@Override
 	public String filterType() {
-		return "pre";
+		return type;
+	}
+	
+	public void disableFilter() {
+		type = FilterType.DISABLED;
+	}
+	
+	public void enableFilter() {
+		type = FilterType.PRE;
 	}
 
 	private static final String[] redirectURLs = 

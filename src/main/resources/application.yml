@@ -19,19 +19,41 @@ endpoints:
 # route 규칙은 zuul.routes.[spring.application.name]=path
 zuul:
   ignored-services: '*'
-  ignored-patterns: { /**/api/** }
+  ignored-patterns: { /**/api/**, /**/admin/** }
   routes:
     simple-service-with-discovery: 
       path: /hello/**
     simple-discovery-server: 
       path: /eureka/**
       #strip-prefix: false
+
+## default filter disable
+#  SendErrorFilter:
+#    error:
+#      disable: false
+
+# custom filter disable
+  EurekaRedirectPreFilter:
+    pre:
+      disable: true
+  EurekaRedirectPostFilter:
+    post:
+      disable: false
+#  EurekaErrorRedirectFilter:
+#    post:
+#      disable: true
+#  ExampleErrorFilter:
+#    error:
+#      maxRetry: 3
+#      disable: true
+
+
 eureka:
   instance:
     appname: zuul-proxy-testapp
     hostname: ${vcap.application.uris[0]:localhost}
-    #non-secure-port: 80               # DO NOT USE NON-SECURE PORT WHEN IT USES EUREKA CLIENT
-    #non-secure-port-enabled: false    # DO NOT USE NON-SECURE PORT WHEN IT USES EUREKA CLIENT
+    #non-secure-port: ${server.port}   # DO NOT USE NON-SECURE PORT WHEN IT USES EUREKA CLIENT
+    #non-secure-port-enabled: true     # DO NOT USE NON-SECURE PORT WHEN IT USES EUREKA CLIENT
     metadata-map:
       instanceId: ${vcap.application.instance_id:${spring.application.name}-${eureka.instance.metadata-map.uuid}}
       uuid: ${random.uuid}
@@ -39,7 +61,15 @@ eureka:
     lease-renewal-interval-in-seconds: 10
   client:
     registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: ${eureka.client.enabled:true}
     
 ribbon:
   ConnectTimeout: 3000
   ReadTimeout: 60000
+ 
+# https://docs.spring.io/spring-boot/docs/1.5.4.RELEASE/reference/htmlsingle/#production-ready-sensitive-endpoints
+management:
+  security:
+    enabled: false
