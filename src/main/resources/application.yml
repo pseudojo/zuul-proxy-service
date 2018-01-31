@@ -25,7 +25,9 @@ zuul:
       path: /hello/**
     simple-discovery-server: 
       path: /eureka/**
-      #strip-prefix: false
+    simple-discovery-server-static:
+      serviceId: simple-discovery-server
+      path: /*/**
 
 ## zuul default filter disable
 #  SendErrorFilter:
@@ -33,12 +35,12 @@ zuul:
 #      disable: true
 
 # zuul custom filter disable
-  EurekaRedirectPreFilter:
+  RequestMonitorFilter:
     pre:
-      disable: true
+      disable: false
   EurekaRedirectPostFilter:
     post:
-      disable: false
+      disable: true
   EurekaErrorRedirectFilter:
     post:
       disable: true

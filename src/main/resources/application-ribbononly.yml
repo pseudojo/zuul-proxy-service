@@ -21,17 +21,24 @@ zuul:
       serviceId: simple-service-with-discovery
       path: /hello/**
     simple-discovery-server:
-      serviceId: simple-discovery-server 
+      serviceId: simple-discovery-server
       path: /eureka/**
-      #strip-prefix: false
+    simple-discovery-server-static:
+      serviceId: simple-discovery-server
+      path: /*/**
+      
+## zuul default filter disable
+#  SendErrorFilter:
+#    error:
+#      disable: true
 
 # zuul custom filter disable
-  EurekaRedirectPreFilter:
+  RequestMonitorFilter:
     pre:
-      disable: true
+      disable: false
   EurekaRedirectPostFilter:
     post:
-      disable: false
+      disable: true
   EurekaErrorRedirectFilter:
     post:
       disable: true
@@ -42,26 +49,23 @@ zuul:
 
 eureka:
   client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
     enabled: false
-
-simple-service-with-discovery:
-  ribbon:
-    eureka:
-      enabled: false
-    listOfServers: localhost:8988,localhost:8989
-    ServerListRefreshInterval: 5000    
-
-simple-discovery-server:
-  ribbon:
-    eureka:
-      enabled: false
-    listOfServers: localhost:8761
-    ServerListRefreshInterval: 5000
 
 ribbon:
   eureka:
     enabled: false
   ConnectTimeout: 3000
   ReadTimeout: 60000
+
+simple-service-with-discovery:
+    listOfServers: localhost:8988,localhost:8989
+    ServerListRefreshInterval: 5000    
+
+simple-discovery-server:
+    listOfServers: localhost:8761
+    ServerListRefreshInterval: 5000
+
+# https://docs.spring.io/spring-boot/docs/1.5.4.RELEASE/reference/htmlsingle/#production-ready-sensitive-endpoints
+management:
+  security:
+    enabled: false
