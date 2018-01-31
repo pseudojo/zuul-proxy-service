@@ -25,6 +25,21 @@ zuul:
       path: /eureka/**
       #strip-prefix: false
 
+# zuul custom filter disable
+  EurekaRedirectPreFilter:
+    pre:
+      disable: true
+  EurekaRedirectPostFilter:
+    post:
+      disable: false
+  EurekaErrorRedirectFilter:
+    post:
+      disable: true
+  ExampleErrorFilter:
+    error:
+      maxRetry: 3
+      disable: true
+
 eureka:
   client:
     serviceUrl:

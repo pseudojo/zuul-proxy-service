@@ -47,6 +47,20 @@ public class EurekaRedirectPreFilter extends ZuulFilter {
 	
 	@Override
 	public Object run() {
+		RequestContext.getCurrentContext().unset();
+		try {
+			RequestContext.getCurrentContext().getResponse().getOutputStream().println( "Test" );
+			RequestContext.getCurrentContext().getResponse().getOutputStream().flush();
+		} catch (Throwable ignore) { 
+			
+		}
+		
+		return null;
+	}
+	
+	/*
+	@Override
+	public Object run() {
 		RequestContext rctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = rctx.getRequest();
 		
@@ -75,4 +89,5 @@ public class EurekaRedirectPreFilter extends ZuulFilter {
 		}
 		return null;
 	}
+	*/
 }

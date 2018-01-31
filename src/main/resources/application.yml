@@ -27,26 +27,25 @@ zuul:
       path: /eureka/**
       #strip-prefix: false
 
-## default filter disable
+## zuul default filter disable
 #  SendErrorFilter:
 #    error:
-#      disable: false
+#      disable: true
 
-# custom filter disable
+# zuul custom filter disable
   EurekaRedirectPreFilter:
     pre:
       disable: true
   EurekaRedirectPostFilter:
     post:
       disable: false
-#  EurekaErrorRedirectFilter:
-#    post:
-#      disable: true
-#  ExampleErrorFilter:
-#    error:
-#      maxRetry: 3
-#      disable: true
-
+  EurekaErrorRedirectFilter:
+    post:
+      disable: true
+  ExampleErrorFilter:
+    error:
+      maxRetry: 3
+      disable: true
 
 eureka:
   instance:
@@ -63,7 +62,7 @@ eureka:
     registry-fetch-interval-seconds: 5
     service-url:
       defaultZone: http://localhost:8761/eureka/
-    enabled: ${eureka.client.enabled:true}
+    enabled: ${zuul.eureka.client.enabled:true}
     
 ribbon:
   ConnectTimeout: 3000
