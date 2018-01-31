@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 
@@ -16,9 +16,9 @@ import com.example.filter.eureka.pre.EurekaRedirectPreFilter;
 import com.netflix.zuul.ZuulFilter;
 
 @SpringBootApplication
-@EnableEurekaClient
+@RibbonClient(name = "simple-service-with-discovery")
 @EnableZuulProxy
-public class ZuulProxyServiceApplication {
+public class ZuulWithRibbonOnlyApplication {
 	
 	private final Logger logger = LoggerFactory.getLogger( getClass() ); 
 	
@@ -29,7 +29,10 @@ public class ZuulProxyServiceApplication {
 	//private boolean isDisabledPostFilter;
 	
 	public static void main(String[] args) {
-		SpringApplication.run(ZuulProxyServiceApplication.class, args);
+		System.setProperty("spring.profiles.active", "ribbononly");
+		System.setProperty("example.eureka.client.enabled", "false");
+		
+		SpringApplication.run(ZuulWithRibbonOnlyApplication.class, args);
 	}
 	
 	@Bean

@@ -61,5 +61,7 @@ simple-discovery-server:
     ServerListRefreshInterval: 5000
 
 ribbon:
+  eureka:
+    enabled: false
   ConnectTimeout: 3000
   ReadTimeout: 60000

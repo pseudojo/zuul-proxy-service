@@ -62,7 +62,7 @@ eureka:
     registry-fetch-interval-seconds: 5
     service-url:
       defaultZone: http://localhost:8761/eureka/
-    enabled: ${zuul.eureka.client.enabled:true}
+    enabled: ${example.eureka.client.enabled:true}
     
 ribbon:
   ConnectTimeout: 3000
