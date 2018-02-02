@@ -29,7 +29,10 @@ public class RequestMonitorFilter extends ZuulFilter {
 	
 	@Override
 	public Object run() {
-		logger.info( "Request URL : {}", RequestContext.getCurrentContext().getRequest().getRequestURL() );
+		final RequestContext ctx = RequestContext.getCurrentContext();
+		logger.info( "Request URI : {}", ctx.getRequest().getRequestURI() );
+		logger.info( "Request URL : {}", ctx.getRequest().getRequestURL() );
+		
 		return null;
 	}
 }

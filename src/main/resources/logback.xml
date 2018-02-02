@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Official document for logback : https://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+<configuration scan="true" scanPeriod="30 seconds">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!-- pattern 1 -->
+            <!-- <Pattern>%highlight( %d %class{0}:%line) - %msg%n</Pattern> -->
+           
+            <!-- pattern 2 (useful for debugging) -->
+            <Pattern>%highlight( %d{yyyy/MM/dd HH:mm:ss} [%thread] %-5level %class{$@}:%line) - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+    <root level="INFO">
+	    <appender-ref ref="STDOUT" />
+	</root>
+	
+	<logger name="com.example" level="info" />
+</configuration>
